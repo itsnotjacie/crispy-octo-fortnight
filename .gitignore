@@ -1,0 +1,5 @@
+# ignore Visual Studio build folder
+out/
+
+# ignore Visual Studio config folder
+.vs/
