@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <array>
 
 int main(int argc, char** argv) 
 {
@@ -13,28 +14,58 @@ int main(int argc, char** argv)
 		if (expression == exit) calculating = false;
 		else
 		{
-			const char op = '+';
-			const auto position = expression.find(op);
-
-			const auto lhs = expression.substr(0, position);
-			const auto rhs = expression.substr(position + 1, expression.size() - position - 1);
-
-			bool valid = true;
-			int lhs_value, rhs_value;
-			try
+			std::array<char, 4> operators = { '+','-','*','/' };
+			std::pair<char, std::string::size_type> search_result;
+			for (auto op : operators) 
 			{
-				lhs_value = std::stoi(lhs);
-				rhs_value = std::stoi(rhs);
+				search_result.first = op;
+				search_result.second = expression.find(op);
+				if (search_result.second != std::string::npos) break;
 			}
-			catch (const std::invalid_argument&)
+
+			if (search_result.second == std::string::npos)
 			{
-				std::cout << "Invalid input" << std::endl << std::endl;
-				valid = false;
+				std::cout << "Expression must have operator" << std::endl << std::endl;
 			}
-			if (valid)
+			else
 			{
-				auto result = lhs_value + rhs_value;
-				std::cout << "The answer is: " << result << "." << std::endl << std::endl;
+				const auto position = search_result.second;
+				const auto lhs = expression.substr(0, position);
+				const auto rhs = expression.substr(position + 1, expression.size() - position - 1);
+
+				bool valid = true;
+				int lhs_value, rhs_value;
+				try
+				{
+					lhs_value = std::stoi(lhs);
+					rhs_value = std::stoi(rhs);
+				}
+				catch (const std::invalid_argument&)
+				{
+					std::cout << "Invalid input" << std::endl << std::endl;
+					valid = false;
+				}
+				if (valid)
+				{
+					int result = 0;
+					const auto op = search_result.first;
+					switch (op)
+					{
+					case '+': 
+						result = lhs_value + rhs_value;
+						break;
+					case '-':
+						result = lhs_value - rhs_value;
+						break;
+					case '*':
+						result = lhs_value * rhs_value;
+						break;
+					case '/':
+						result = lhs_value / rhs_value;
+						break;
+					}
+					std::cout << "The answer is: " << result << "." << std::endl << std::endl;
+				}
 			}
 		}
 	}
