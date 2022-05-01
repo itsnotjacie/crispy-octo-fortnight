@@ -19,11 +19,23 @@ int main(int argc, char** argv)
 			const auto lhs = expression.substr(0, position);
 			const auto rhs = expression.substr(position + 1, expression.size() - position - 1);
 
-			auto lhs_value = std::stoi(lhs);
-			auto rhs_value = std::stoi(rhs);
-			auto result = lhs_value + rhs_value;
-
-			std::cout << "The answer is: " << result << "." << std::endl << std::endl;
+			bool valid = true;
+			int lhs_value, rhs_value;
+			try
+			{
+				lhs_value = std::stoi(lhs);
+				rhs_value = std::stoi(rhs);
+			}
+			catch (const std::invalid_argument&)
+			{
+				std::cout << "Invalid input" << std::endl << std::endl;
+				valid = false;
+			}
+			if (valid)
+			{
+				auto result = lhs_value + rhs_value;
+				std::cout << "The answer is: " << result << "." << std::endl << std::endl;
+			}
 		}
 	}
 	return 0;
