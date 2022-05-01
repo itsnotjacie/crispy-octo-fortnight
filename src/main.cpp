@@ -7,6 +7,16 @@ int main(int argc, char** argv)
 	std::string expression;
 	std::getline(std::cin, expression);
 
-	std::cout << "You entered \"" << expression << "\"." << std::endl; 
+	const char op = '+';
+	const auto position = expression.find(op);
+
+	const auto lhs = expression.substr(0, position);
+	const auto rhs = expression.substr(position + 1, expression.size() - position - 1);
+
+	auto lhs_value = std::stoi(lhs);
+	auto rhs_value = std::stoi(rhs);
+	auto result = lhs_value + rhs_value;
+
+	std::cout << "The answer is: " << result << "." << std::endl; 
 	return 0;
 }
