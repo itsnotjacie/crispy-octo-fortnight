@@ -2,6 +2,8 @@
 #include <string>
 #include <array>
 
+struct operator_search_result { char op; std::string::size_type position; };
+
 int main(int argc, char** argv) 
 {
 	std::string exit = "exit";
@@ -15,23 +17,22 @@ int main(int argc, char** argv)
 		else
 		{
 			std::array<char, 4> operators = { '+','-','*','/' };
-			std::pair<char, std::string::size_type> search_result;
+			operator_search_result search_result;
 			for (auto op : operators) 
 			{
-				search_result.first = op;
-				search_result.second = expression.find(op);
-				if (search_result.second != std::string::npos) break;
+				search_result.op = op;
+				search_result.position = expression.find(op);
+				if (search_result.position != std::string::npos) break;
 			}
 
-			if (search_result.second == std::string::npos)
+			if (search_result.position == std::string::npos)
 			{
 				std::cout << "Expression must have operator" << std::endl << std::endl;
 			}
 			else
 			{
-				const auto position = search_result.second;
-				const auto lhs = expression.substr(0, position);
-				const auto rhs = expression.substr(position + 1, expression.size() - position - 1);
+				const auto lhs = expression.substr(0, search_result.position);
+				const auto rhs = expression.substr(search_result.position + 1, expression.size() - search_result.position - 1);
 
 				bool valid = true;
 				int lhs_value, rhs_value;
@@ -48,7 +49,7 @@ int main(int argc, char** argv)
 				if (valid)
 				{
 					int result = 0;
-					const auto op = search_result.first;
+					const auto op = search_result.op;
 					switch (op)
 					{
 					case '+': 
